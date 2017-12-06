@@ -7,10 +7,10 @@ module Commands
       message = opts[:message][:reply_to_message] ? opts[:message][:reply_to_message] : opts[:message]
       if !message[:photo].blank? || !message[:document].blank?
         tmp = self.get_file(message)
-        tweet = TwitterService.update_with_media("#{message.from.first_name} #{message.from.last_name}: ", File.new(tmp))
+        tweet = TwitterService.update_with_media("", File.new(tmp))
         File.delete(tmp)
       else
-        tweet = TwitterService.update("#{message.from.first_name} #{message.from.last_name}: #{message.text.sub('/tweet ','')}")
+        tweet = TwitterService.update("#{message.text.sub('/tweet ','')}")
       end
       tweet.url
     end
