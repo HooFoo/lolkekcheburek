@@ -18,6 +18,7 @@ class TelegramService
 
     rescue Exception => e
       Rails.logger.error e
+      Rails.logger.error e.backtrace
     end
   end
 
@@ -27,6 +28,22 @@ class TelegramService
 
   def self.call_api(name, params={})
     @@bot.api.send name, params
+  end
+
+  def self.get_file(message)
+    if message.photo.empty?
+      file_id = message.document.file_id
+    else
+      file_id = message.photo.last[:file_id]
+    end
+    file = call_api :get_file, file_id: file_id
+    file_path = file.dig('result', 'file_path')
+    photo_url = "https://api.telegram.org/file/bot#{ENV['TG_TOKEN']}/#{file_path}"
+    tmp = "tmp/#{file_path.split('/')[1]}"
+    open(tmp, 'wb') do |file|
+      file << open(photo_url).read
+    end
+    tmp
   end
 
   private
