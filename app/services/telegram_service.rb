@@ -50,7 +50,7 @@ class TelegramService
 
   def self.process(message)
     text = message.text
-    if text[0] == '/'
+    if !text.blank? && text[0] == '/'
       regex = /\/(\w+)(@\w+)?(\s(.+))?/i
       groups = regex.match text
       begin
