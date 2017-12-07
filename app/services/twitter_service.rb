@@ -9,6 +9,10 @@ class TwitterService
     end
   end
 
+  def self.update_profile_name(name)
+    @@client.update_profile(:name => name)
+  end
+
   def self.update(text)
     @@client.update(text)
   end

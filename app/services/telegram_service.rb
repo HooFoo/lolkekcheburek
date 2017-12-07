@@ -37,7 +37,7 @@ class TelegramService
       regex = /\/(\w+)(@\w+)?(\s(.+))?/i
       groups = regex.match text
       begin
-        plugin = "Commands::#{groups[1].capitalize}".constantize
+        plugin = "Commands::#{groups[1].camelize}".constantize
         reply = plugin.send :run, {text: groups.to_a.last, message: message}
         @@bot.api.send_message chat_id: message.chat.id, text: reply.to_s
       rescue Exception => e
